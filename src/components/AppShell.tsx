@@ -55,8 +55,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain">
-          <div className="mx-auto max-w-6xl px-4 py-3 sm:px-5 sm:py-4 lg:px-6">
+        <main className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden overscroll-contain">
+          <div className="mx-auto min-h-0 w-full max-w-6xl flex-1 px-4 py-3 sm:px-5 sm:py-4 lg:px-6">
             {children}
           </div>
         </main>

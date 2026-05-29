@@ -56,7 +56,7 @@ export default function AnalyticsPage() {
 
       <InsightsPanel insights={insights} />
 
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="grid min-h-0 gap-3 lg:grid-cols-2">
         <GrowthLineChart
           data={analytics.growth}
           insight={analytics.insights.growth}

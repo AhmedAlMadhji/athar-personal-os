@@ -7,14 +7,14 @@ import {
   Legend,
   Pie,
   PieChart,
-  ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import type { DistributionDataPoint } from "@/types/analytics";
-import type { EntryType } from "@/types/entry";
 import { ChartCard } from "@/components/charts/ChartCard";
+import { ChartPlaceholder, ChartWrapper } from "@/components/charts/ChartWrapper";
 import { getChartTooltipProps } from "@/components/charts/chartTooltipProps";
 import { useChartTheme } from "@/hooks/useChartTheme";
+import type { DistributionDataPoint } from "@/types/analytics";
+import type { EntryType } from "@/types/entry";
 
 interface DistributionPieChartProps {
   data: DistributionDataPoint[];
@@ -38,18 +38,17 @@ export function DistributionPieChart({ data }: DistributionPieChartProps) {
   if (data.length === 0) {
     return (
       <ChartCard title={t("distribution")} description={t("distributionDesc")}>
-        <div className="flex h-64 items-center justify-center text-sm text-zinc-500">
-          {t("distributionEmpty")}
-        </div>
+        <ChartPlaceholder height="lg">
+          <span className="text-sm text-zinc-500">{t("distributionEmpty")}</span>
+        </ChartPlaceholder>
       </ChartCard>
     );
   }
 
   return (
     <ChartCard title={t("distribution")} description={t("distributionDesc")}>
-      <div className="chart-ltr h-72 w-full" dir="ltr">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
+      <ChartWrapper height="lg">
+        <PieChart>
             <Pie
               data={chartData}
               cx="50%"
@@ -75,8 +74,7 @@ export function DistributionPieChart({ data }: DistributionPieChartProps) {
               )}
             />
           </PieChart>
-        </ResponsiveContainer>
-      </div>
+      </ChartWrapper>
     </ChartCard>
   );
 }

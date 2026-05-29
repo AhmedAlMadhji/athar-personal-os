@@ -6,11 +6,11 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
-  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import { ChartPlaceholder, ChartWrapper } from "@/components/charts/ChartWrapper";
 import { getChartTooltipProps } from "@/components/charts/chartTooltipProps";
 import { InsightCard } from "@/components/charts/InsightCard";
 import { useChartTheme } from "@/hooks/useChartTheme";
@@ -50,18 +50,17 @@ export function TypeComparisonBarChart({
   if (data.length === 0) {
     return (
       <InsightCard title={title} description={description}>
-        <div className="flex h-52 items-center justify-center text-xs text-zinc-500">
-          {t("typeComparisonEmpty")}
-        </div>
+        <ChartPlaceholder>
+          <span className="text-xs text-zinc-500">{t("typeComparisonEmpty")}</span>
+        </ChartPlaceholder>
       </InsightCard>
     );
   }
 
   return (
     <InsightCard title={title} description={description} takeaway={takeaway}>
-      <div className="chart-ltr h-52 w-full" dir="ltr">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
+      <ChartWrapper>
+        <BarChart
             data={chartData}
             layout="vertical"
             margin={{ top: 4, right: 8, left: 4, bottom: 0 }}
@@ -96,8 +95,7 @@ export function TypeComparisonBarChart({
               ))}
             </Bar>
           </BarChart>
-        </ResponsiveContainer>
-      </div>
+      </ChartWrapper>
     </InsightCard>
   );
 }

@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl";
 import {
   CartesianGrid,
-  ResponsiveContainer,
   Scatter,
   ScatterChart,
   Tooltip,
@@ -11,6 +10,7 @@ import {
   YAxis,
   ZAxis,
 } from "recharts";
+import { ChartPlaceholder, ChartWrapper } from "@/components/charts/ChartWrapper";
 import { getChartTooltipProps } from "@/components/charts/chartTooltipProps";
 import { InsightCard } from "@/components/charts/InsightCard";
 import { useChartTheme } from "@/hooks/useChartTheme";
@@ -37,18 +37,17 @@ export function CorrelationScatterChart({
   if (data.length < 2) {
     return (
       <InsightCard title={title} description={description}>
-        <div className="flex h-52 items-center justify-center text-xs text-zinc-500">
-          {t("correlationEmpty")}
-        </div>
+        <ChartPlaceholder>
+          <span className="text-xs text-zinc-500">{t("correlationEmpty")}</span>
+        </ChartPlaceholder>
       </InsightCard>
     );
   }
 
   return (
     <InsightCard title={title} description={description} takeaway={takeaway}>
-      <div className="chart-ltr h-52 w-full" dir="ltr">
-        <ResponsiveContainer width="100%" height="100%">
-          <ScatterChart margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
+      <ChartWrapper>
+        <ScatterChart margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
             <CartesianGrid
               strokeDasharray="3 3"
               className={chartTheme.gridClassName}
@@ -85,8 +84,7 @@ export function CorrelationScatterChart({
             />
             <Scatter data={data} fill="#6366f1" animationDuration={400} />
           </ScatterChart>
-        </ResponsiveContainer>
-      </div>
+      </ChartWrapper>
     </InsightCard>
   );
 }

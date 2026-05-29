@@ -6,9 +6,9 @@ import {
   Cell,
   Pie,
   PieChart,
-  ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { ChartWrapper } from "@/components/charts/ChartWrapper";
 import { getChartTooltipProps } from "@/components/charts/chartTooltipProps";
 import { InsightCard } from "@/components/charts/InsightCard";
 import { useChartTheme } from "@/hooks/useChartTheme";
@@ -43,9 +43,8 @@ export function TagsBreakdownPieChart({
 
   return (
     <InsightCard title={title} description={description} takeaway={takeaway}>
-      <div className="chart-ltr h-52 w-full" dir="ltr">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
+      <ChartWrapper>
+        <PieChart>
             <Pie
               data={chartData}
               cx="50%"
@@ -63,8 +62,7 @@ export function TagsBreakdownPieChart({
             </Pie>
             <Tooltip {...tooltipProps} />
           </PieChart>
-        </ResponsiveContainer>
-      </div>
+      </ChartWrapper>
       <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1 px-1">
         {chartData.map((item) => (
           <li
