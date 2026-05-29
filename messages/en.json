@@ -1,0 +1,549 @@
+{
+  "app": {
+    "title": "Self Profile System",
+    "description": "A private self-reflection system to track strengths, weaknesses, skills, and notes over time.",
+    "brandSubtitle": "Personal OS",
+    "brandName": "Self Profile",
+    "footer": "Your private growth journal — stored locally in your browser.",
+    "dataLocal": "Data stored locally in IndexedDB",
+    "mobileTitle": "Self Profile"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "addEntry": "Add Entry",
+    "timeline": "Timeline",
+    "analytics": "Analytics",
+    "insights": "Insights",
+    "settings": "Settings",
+    "about": "About"
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "Personal project · evolving system",
+      "title": "Built to help you understand yourself through data",
+      "subtext": "Most people live without a clear picture of who they are, how they change, or what actually drives their growth. This app is a small, honest attempt to turn reflection into something you can see — not just remember.",
+      "tagline": "Built by Ahmed Al-Madhaji — while trying to understand himself.",
+      "creator": "Ahmed Al-Madhaji",
+      "github": "GitHub"
+    },
+    "problem": {
+      "title": "What's broken today",
+      "intro": "Self-understanding rarely fails because people don't care. It fails because there is no system:",
+      "items": {
+        "lost": "It's easy to feel lost about who you are and what you're actually improving",
+        "noTracking": "Personal growth is rarely tracked with the same care as work or fitness",
+        "noProgress": "Real progress is hard to see when it's only stored in memory",
+        "memory": "Memory is unreliable — we rewrite our past without noticing",
+        "noOs": "There is no personal \"operating system\" for how you live and grow"
+      }
+    },
+    "solution": {
+      "title": "A personal OS, not a notes app",
+      "intro": "This is not another journal. It's a lightweight system to capture your strengths, weaknesses, skills, and reflections — then read them back as patterns over time.",
+      "osLabel": "Personal Operating System for Human Growth",
+      "items": {
+        "entries": {
+          "title": "Entries",
+          "desc": "Structured reflections you can rate, tag, and revisit"
+        },
+        "insights": {
+          "title": "Insights",
+          "desc": "Proven realizations — wisdom you don't want to forget"
+        },
+        "analytics": {
+          "title": "Analytics",
+          "desc": "Charts that answer questions, not just display numbers"
+        },
+        "timeline": {
+          "title": "Timeline",
+          "desc": "A chronological map of how you've been changing"
+        }
+      }
+    },
+    "philosophy": {
+      "title": "How I think about it",
+      "intro": "A human being is not a fixed label — it's a system of behaviors, moods, habits, and choices. When you log them honestly, patterns appear.",
+      "items": {
+        "data": "Human = data + behavior + reflection",
+        "measurable": "Growth should be measurable, even if imperfectly",
+        "system": "Self-awareness needs a system — not random thinking once a month",
+        "datapoint": "Every experience can be a data point toward understanding"
+      }
+    },
+    "creator": {
+      "title": "Who built this",
+      "story": "I'm Ahmed Raed — an independent developer who enjoys AI and building personal systems. I made this while working on my own clarity, not as a startup pitch.",
+      "background": "I like tools that help humans think better about themselves — simple, local, private, and honest.",
+      "motivation": "The goal is to improve how we understand ourselves through data we already generate: our reflections, ratings, and habits over time.",
+      "githubCta": "github.com/AhmedAlMadhji"
+    },
+    "closing": {
+      "quote": "You cannot improve what you don't understand.",
+      "note": "This project will keep evolving — one entry, one insight, one pattern at a time."
+    }
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "ar": "Arabic"
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "chunkTitle": "App update detected",
+    "chunkDescription": "This page reference is outdated — usually caused by a stale dev build. Reload to fetch the latest version.",
+    "genericDescription": "An unexpected error occurred while loading this page.",
+    "retry": "Try again",
+    "reload": "Reload page"
+  },
+  "common": {
+    "loading": "Loading...",
+    "loadingProfile": "Loading your profile...",
+    "loadingTimeline": "Loading timeline...",
+    "loadingEntry": "Loading entry...",
+    "loadingAnalytics": "Loading analytics...",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "saving": "Saving...",
+    "exporting": "Exporting...",
+    "importing": "Importing...",
+    "optional": "(optional)",
+    "required": "*",
+    "untitled": "Untitled entry",
+    "rating": "Rating",
+    "ratingOf": "{rating}/10",
+    "created": "Created",
+    "updated": "Updated",
+    "backToTimeline": "← Back to timeline",
+    "viewAll": "View all →",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
+  },
+  "entryTypes": {
+    "strength": "Strength",
+    "weakness": "Weakness",
+    "skill": "Skill",
+    "note": "Note"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "description": "Your personal growth operating system — track, reflect, improve.",
+    "exportProfile": "Export Profile",
+    "addEntry": "Add Entry",
+    "viewAnalytics": "View Analytics",
+    "secondaryActions": "Secondary actions",
+    "overview": "Overview",
+    "totalEntries": "Total entries",
+    "strengths": "Strengths",
+    "weaknesses": "Weaknesses",
+    "skills": "Skills",
+    "growthPulse": "Growth Pulse",
+    "growthPulseHint": "Key signals from your reflection history",
+    "averageRating": "Average rating",
+    "strengthRatio": "Strength ratio",
+    "ofTrackedTraits": "of tracked traits",
+    "notesCaptured": "Notes captured",
+    "topFocusAreas": "Top focus areas",
+    "recentEntries": "Recent entries",
+    "noEntries": "No entries yet. Start by adding your first reflection.",
+    "createFirst": "Create your first entry",
+    "quickStats": "Quick stats",
+    "recentActivity": "Activity (7d)",
+    "topTags": "Top tags",
+    "topStrengths": "Top strengths",
+    "noTagsYet": "No tags yet",
+    "noStrengthsYet": "No strengths logged yet"
+  },
+  "welcome": {
+    "refresh": "New message",
+    "customMessage": "From your personal message library",
+    "messages": [
+      "Every entry you write is a step toward understanding yourself.",
+      "Small reflections today build a stronger you tomorrow.",
+      "Awareness is the first step toward change.",
+      "You are building a better version of yourself, one entry at a time.",
+      "Consistency in reflection creates clarity in life.",
+      "Growth is not a destination — it is a daily practice.",
+      "Honest self-reflection turns weakness into direction.",
+      "The person you want to become is shaped by what you notice today.",
+      "Discipline grows when you name it, track it, and return to it.",
+      "Your future self will thank you for the honesty you show now.",
+      "Progress is quiet until you look back and see how far you have come.",
+      "Clarity comes from returning to your thoughts again and again.",
+      "You do not need perfection — you need presence and persistence.",
+      "Each strength you record is proof of who you already are.",
+      "Facing a weakness is an act of courage, not failure.",
+      "Skills sharpen when you celebrate progress, not only outcomes.",
+      "Notes are anchors — they hold what your mind might forget.",
+      "Self-awareness is a superpower you strengthen with every entry.",
+      "One honest line today can change how you show up tomorrow.",
+      "You are the author of your growth story — keep writing it.",
+      "Reflection turns experience into wisdom.",
+      "What you measure with care, you improve with intention.",
+      "A calmer mind begins with a clearer record of your inner world.",
+      "Trust the process — small steps compound into real change.",
+      "You are allowed to grow at your own pace and still call it success.",
+      "Return to this space whenever you need to remember who you are becoming.",
+      "The best investment you can make is understanding yourself deeply.",
+      "Naming your patterns is how you start to change them.",
+      "Today’s reflection is tomorrow’s confidence.",
+      "Stay curious about yourself — there is always more to discover.",
+      "You are doing meaningful work simply by paying attention."
+    ]
+  },
+  "addEntry": {
+    "title": "Add Entry",
+    "description": "Capture a strength, weakness, skill, or personal note.",
+    "save": "Save Entry"
+  },
+  "timeline": {
+    "title": "Timeline",
+    "description": "All entries sorted by date, newest first.",
+    "filterType": "Filter by type",
+    "filterTag": "Filter by tag",
+    "allTypes": "All types",
+    "allTags": "All tags",
+    "showing": "Showing {filtered} of {total} entries",
+    "noMatch": "No entries match your filters."
+  },
+  "entryDetail": {
+    "notFound": "Entry not found",
+    "notFoundHint": "This entry may have been deleted.",
+    "editTitle": "Edit Entry",
+    "update": "Update Entry",
+    "deleteConfirm": "Delete this entry permanently? This cannot be undone."
+  },
+  "form": {
+    "title": "Title",
+    "type": "Type",
+    "description": "Description",
+    "tags": "Tags",
+    "tagsHint": "(comma separated)",
+    "descriptionRequired": "Description is required.",
+    "saveError": "Could not save entry. Please try again.",
+    "titlePlaceholder": "e.g. Public speaking",
+    "descriptionPlaceholder": "Describe this entry in detail...",
+    "tagsPlaceholder": "career, habits, learning"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "Understand your patterns — every chart answers one question about your growth.",
+    "growthEmpty": "Add entries to see your growth trend.",
+    "consistencyEmpty": "Log reflections weekly to reveal your consistency pattern.",
+    "typeComparisonEmpty": "No entries yet — start logging to compare your focus areas.",
+    "correlationEmpty": "Need at least two active weeks to analyze effort vs outcome.",
+    "weekOf": "Week of {label}",
+    "avgRating": "Avg rating",
+    "entryCount": "Entries",
+    "effortAxis": "Weekly entries",
+    "outcomeAxis": "Avg rating",
+    "heatmapEmpty": "No activity recorded in this period.",
+    "heatmapLess": "Less",
+    "heatmapMore": "More",
+    "heatmapEntries": "{count, plural, one {# entry} other {# entries}}",
+    "insightsTitle": "Detected patterns",
+    "insightsDesc": "Automated signals from your reflection history",
+    "days": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "chartInsights": {
+      "growth": {
+        "title": {
+          "up": "Your self-assessment is trending upward",
+          "down": "Recent ratings suggest a dip in confidence",
+          "flat": "Your growth pace is steady, not volatile"
+        },
+        "description": "Weekly average rating — higher means stronger self-assessment over time.",
+        "takeaway": {
+          "up": "Ratings rose by {delta} points — your reflections are translating into higher confidence (latest: {latest}/10).",
+          "down": "Ratings dropped {delta} points recently — consider revisiting what changed in your routine.",
+          "flat": "Ratings hold near {latest}/10 — consistency matters more than spikes right now."
+        }
+      },
+      "typeComparison": {
+        "title": "{type} dominates your reflection focus",
+        "titleEmpty": "Where do you invest your reflection energy?",
+        "description": "Compares how often you log strengths, weaknesses, skills, and notes.",
+        "takeawayStrong": "{ratio}% of trait entries are strengths — you're building on what works.",
+        "takeawayWeak": "Weaknesses lead at {ratio}% of trait entries — a growth opportunity to address.",
+        "takeawayBalanced": "Strengths and weaknesses are balanced ({ratio}% strength ratio) — healthy self-awareness."
+      },
+      "consistency": {
+        "title": {
+          "up": "Your reflection habit is accelerating",
+          "down": "Entry frequency is slowing down",
+          "flat": "You maintain a stable reflection rhythm"
+        },
+        "description": "How many entries you log each week — frequency drives deeper insights.",
+        "takeaway": {
+          "up": "{total} entries logged across these weeks — peak week hit {peak} entries. Momentum is building.",
+          "down": "Only {total} entries recently — consistency unlocks better trend analysis.",
+          "flat": "{total} entries with a steady weekly pace — reliability beats intensity."
+        }
+      },
+      "tags": {
+        "title": "#{tag} is your most recurring theme",
+        "description": "Top focus tags — where your mind spends the most reflection time.",
+        "takeaway": "#{tag} appears in {count} entries — this is a core thread in your personal narrative."
+      },
+      "correlation": {
+        "titleAligned": "More entries correlate with higher self-ratings",
+        "titleMixed": "Effort and outcomes aren't moving in sync yet",
+        "titleEmpty": "Does showing up more improve how you feel?",
+        "description": "Each dot is one week: horizontal = entries logged, vertical = average rating.",
+        "takeawayAligned": "Weeks with more entries tend to score higher — consistency appears to pay off.",
+        "takeawayMixed": "High activity doesn't always lift ratings — quality of reflection may matter more than volume.",
+        "takeawayEmpty": "Log across multiple weeks to see if effort and outcomes align."
+      },
+      "heatmap": {
+        "titleActive": "You show up regularly — reflection is becoming a habit",
+        "titleSparse": "Gaps in your reflection rhythm are visible",
+        "description": "Daily entry density over the last {weeks} weeks — darker means more activity.",
+        "takeawayActive": "{activeDays} active days with {totalEntries} entries — your habit has real momentum.",
+        "takeawaySparse": "Only {activeDays} active days — even 2–3 entries per week compounds over time."
+      }
+    }
+  },
+  "insights": {
+    "empty": "Start adding entries to unlock personalized growth insights.",
+    "lowActivity": "Low reflection activity in the last 7 days — your last entry was {days} days ago.",
+    "weaknessTag": "Weakness in \"{tag}\" appears frequently this week ({count} entries).",
+    "positiveRatingTrend": "Positive growth trend — your average rating rose from {prior} to {recent} over the last two weeks.",
+    "strengthTag": "You are consistently improving in {tag} — {count} strength entries logged.",
+    "improving": "You are consistently improving in {tag}.",
+    "steady": "Keep logging reflections — more data will unlock deeper insights."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your preferences — saved locally on this device.",
+    "appearance": "Appearance",
+    "appearanceHint": "Your theme choice is remembered after you close the app.",
+    "language": "Language",
+    "languageHint": "Your language preference is remembered after you close the app.",
+    "motivationalMessages": "Motivational messages",
+    "motivationalMessagesHint": "Custom messages appear on your dashboard welcome card.",
+    "manageMessages": "Manage messages",
+    "future": "More preferences",
+    "futureHint": "Additional options will appear here in future updates.",
+    "import": {
+      "title": "Import Profile",
+      "description": "Restore a previously exported Personal OS profile.",
+      "importButton": "Import JSON",
+      "invalidTitle": "Invalid Import File",
+      "invalidDescription": "This file is not a valid Personal OS export.",
+      "unsupportedTitle": "Unsupported Version",
+      "unsupportedDescription": "This export was created using a newer version of Personal OS.",
+      "summaryTitle": "Import Summary",
+      "summaryEntries": "Entries: {count}",
+      "summaryInsights": "Insights: {count}",
+      "summaryTags": "Tags: {count}",
+      "replaceWarning": "Your current local data will be replaced.",
+      "importConfirm": "Import",
+      "successTitle": "Profile imported successfully.",
+      "successSubtitle": "{count, plural, one {# entry restored.} other {# entries restored.}}",
+      "failedTitle": "Import Failed",
+      "failedDescription": "Something went wrong while restoring your profile."
+    }
+  },
+  "motivationalMessages": {
+    "title": "Motivational messages",
+    "description": "Create personal messages that inspire you on the dashboard.",
+    "backToSettings": "Back to settings",
+    "addMessage": "New message",
+    "editMessage": "Edit message",
+    "placeholder": "Write something meaningful to your future self...",
+    "add": "Add message",
+    "saveChanges": "Save changes",
+    "empty": "No custom messages yet. Add your first one above.",
+    "favorite": "Mark favorite",
+    "favorited": "★ Favorite",
+    "deleteConfirm": "Delete this message permanently?"
+  },
+  "insightsJournal": {
+    "title": "Personal Insights",
+    "description": "Your wisdom database — proven truths you've learned about yourself.",
+    "addInsight": "Add insight",
+    "addDescription": "Capture a realization, not just an event.",
+    "saveInsight": "Save insight",
+    "editInsight": "Edit insight",
+    "backToInsights": "← Back to insights",
+    "notFound": "Insight not found",
+    "notFoundHint": "This insight may have been deleted.",
+    "deleteConfirm": "Delete this insight permanently?",
+    "totalInsights": "Total insights",
+    "topCategory": "Top category",
+    "entries": "insights",
+    "highestConfidence": "Highest confidence",
+    "search": "Search",
+    "searchPlaceholder": "Search by title or content...",
+    "filterCategory": "Category",
+    "allCategories": "All categories",
+    "sortBy": "Sort by",
+    "sortDate": "Newest first",
+    "sortConfidence": "Highest confidence",
+    "empty": "No insights yet. Add your first realization.",
+    "insightOfDay": "Insight of the Day",
+    "solution": "Solution",
+    "refresh": "New insight",
+    "emptyWidget": "Add personal insights to see one featured here each day.",
+    "addFirstInsight": "Go to Insights →",
+    "form": {
+      "title": "Title",
+      "realization": "Realization",
+      "cause": "Cause",
+      "solution": "Solution",
+      "category": "Category",
+      "confidence": "Confidence level",
+      "titlePlaceholder": "e.g. Preparation improves my communication",
+      "realizationPlaceholder": "What did you discover about yourself?",
+      "causePlaceholder": "Why do you think this happens?",
+      "solutionPlaceholder": "What action works best?",
+      "requiredFields": "Title and realization are required.",
+      "saveError": "Could not save insight. Please try again.",
+      "categories": {
+        "Communication": "Communication",
+        "Discipline": "Discipline",
+        "Productivity": "Productivity",
+        "Learning": "Learning",
+        "Emotional": "Emotional",
+        "Career": "Career",
+        "Health": "Health",
+        "Relationships": "Relationships"
+      }
+    }
+  },
+  "landing": {
+    "brand": "Athar",
+    "nav": {
+      "cta": "Open app"
+    },
+    "hero": {
+      "eyebrow": "Personal OS · see yourself through time",
+      "headline": "Everything you live… leaves a trace in you",
+      "subheadline": "Athar is a system that helps you see yourself clearly over time. It turns your thoughts, days, and notes into traces you can read — instead of losing them in the noise.",
+      "ctaPrimary": "Start your journey with Athar",
+      "ctaSecondary": "See what your trace looks like",
+      "micro": "The problem was never that you weren't growing… but that you couldn't see the trace of your growth."
+    },
+    "problem": {
+      "title": "You live more than you remember",
+      "intro": "Every day that passes carries:",
+      "items": [
+        "Thoughts that disappear",
+        "Feelings you never understand",
+        "Growth attempts you can't measure",
+        "Change that happens — but you can't see"
+      ],
+      "question": "\"Am I actually moving forward… or just repeating myself?\""
+    },
+    "idea": {
+      "title": "What if everything you live… didn't vanish?",
+      "intro": "Athar isn't a notes app.",
+      "subintro": "It's a system that turns your life into data you can see:",
+      "items": [
+        { "icon": "📝", "text": "Every entry = a trace" },
+        { "icon": "🧭", "text": "Every day = a layer of who you are" },
+        { "icon": "📈", "text": "Every week = the shape of your growth" },
+        { "icon": "🧠", "text": "Every idea = part of your full picture" }
+      ]
+    },
+    "transformation": {
+      "beforeTitle": "Before Athar",
+      "before": [
+        "Your day passes without clear meaning",
+        "You remember little and forget much",
+        "You feel stuck despite your efforts"
+      ],
+      "afterTitle": "After Athar",
+      "after": [
+        "You see your growth visually",
+        "You understand your behavior instead of guessing",
+        "You notice yourself across time"
+      ]
+    },
+    "howItWorks": {
+      "title": "Simple by design",
+      "stepLabel": "Step {step}",
+      "steps": [
+        { "icon": "✍️", "text": "Write what passed through your day" },
+        { "icon": "🧠", "text": "The system turns it into a trace" },
+        { "icon": "📊", "text": "It gets analyzed inside the system" },
+        { "icon": "🧭", "text": "You see yourself across time" }
+      ]
+    },
+    "features": {
+      "title": "More than features — meanings",
+      "subtitle": "Built for depth, not checkboxes.",
+      "items": [
+        {
+          "icon": "🧠",
+          "title": "Deeper awareness",
+          "description": "See what you don't notice in yourself"
+        },
+        {
+          "icon": "📈",
+          "title": "Visible growth",
+          "description": "Change becomes clear, not assumed"
+        },
+        {
+          "icon": "🧭",
+          "title": "A timeline journey",
+          "description": "Every day becomes part of a story"
+        },
+        {
+          "icon": "🔍",
+          "title": "Self-understanding",
+          "description": "Don't rely on feeling — rely on your data"
+        }
+      ]
+    },
+    "shift": {
+      "title": "You don't need motivation… you need vision",
+      "line1": "Motivation fades.",
+      "line2": "Vision stays.",
+      "body": "Athar gives you something deeper than hype: a continuous understanding of yourself."
+    },
+    "creator": {
+      "title": "Built from a personal need",
+      "p1": "Athar wasn't built as a product first. It started as a way to understand myself.",
+      "p2": "I lived like anyone else: thinking a lot… improving sometimes… getting lost often.",
+      "p3": "The problem wasn't change — it was that I couldn't see it.",
+      "p4": "So I started building a system that turns life into something visible.",
+      "github": "Ahmed Al-Madhaji · GitHub"
+    },
+    "audience": {
+      "title": "For people who think deeply",
+      "items": [
+        "Thinkers",
+        "Builders",
+        "Quiet self-observers",
+        "Those who feel there's more inside than shows"
+      ]
+    },
+    "final": {
+      "title": "Start seeing yourself… instead of guessing",
+      "ctaPrimary": "Start using Athar",
+      "ctaSecondary": "View your journey",
+      "closing": "You don't need to become someone new… you need to see who you've already become."
+    },
+    "footer": "Athar — your private growth journal. Data stays on your device.",
+    "footerAbout": "About the project"
+  },
+  "dialog": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "deleteTitle": "Delete permanently?"
+  }
+}

@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-tajawal), "Tajawal", sans-serif;
+}
+
+@keyframes dialog-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-panel-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dialog-backdrop-in {
+  animation: dialog-backdrop-in 200ms ease-out forwards;
+}
+
+.dialog-panel-in {
+  animation: dialog-panel-in 200ms ease-out forwards;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+}
+
+body {
+  @apply bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-100;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Single typography system — Tajawal everywhere */
+html,
+body,
+button,
+input,
+textarea,
+select,
+option,
+optgroup,
+label,
+a {
+  font-family: var(--font-sans);
+}
+
+*:not(svg):not(svg *),
+*::before,
+*::after {
+  font-family: inherit;
+}
+
+/* Portals, menus, dialogs, and third-party overlay roots */
+[role="dialog"],
+[role="alertdialog"],
+[role="menu"],
+[role="menuitem"],
+[role="listbox"],
+[role="option"],
+[role="tooltip"],
+[role="combobox"],
+[data-radix-popper-content-wrapper],
+[data-radix-portal] {
+  font-family: inherit;
+}
+
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
+/* Recharts: axis, legend, tooltip */
+.recharts-text,
+.recharts-cartesian-axis-tick-value,
+.recharts-legend-item-text,
+.recharts-tooltip-wrapper,
+.recharts-default-tooltip {
+  font-family: inherit !important;
+}
+
+.chart-ltr {
+  direction: ltr;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+@keyframes landing-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.landing-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(238, 242, 255, 0.9) 0%,
+    rgba(250, 250, 250, 0.95) 35%,
+    rgba(236, 253, 245, 0.5) 70%,
+    rgba(245, 243, 255, 0.8) 100%
+  );
+  background-size: 200% 200%;
+  animation: landing-gradient-shift 18s ease infinite;
+}
+
+.dark .landing-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 27, 75, 0.35) 0%,
+    rgba(9, 9, 11, 0.95) 40%,
+    rgba(6, 44, 35, 0.2) 70%,
+    rgba(46, 16, 101, 0.25) 100%
+  );
+  background-size: 200% 200%;
+}
