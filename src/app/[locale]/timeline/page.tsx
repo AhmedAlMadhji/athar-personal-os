@@ -6,16 +6,19 @@ import { useTranslations } from "next-intl";
 import { EntryCard } from "@/components/EntryCard";
 import { PageHeader } from "@/components/PageHeader";
 import { getAllEntries, getAllTags } from "@/lib/entriesService";
-import type { Entry, EntryType } from "@/types/entry";
-import { ENTRY_TYPES } from "@/types/entry";
+import { useEntryTypes } from "@/hooks/useEntryTypes";
+import { resolveTypeLabel } from "@/lib/entryTypesService";
+import type { Entry } from "@/types/entry";
+import type { CoreEntryType } from "@/types/entry";
 
 export default function TimelinePage() {
   const t = useTranslations("timeline");
   const te = useTranslations("entryTypes");
+  const { allTypeIds, customTypes } = useEntryTypes();
   const tc = useTranslations("common");
   const [entries, setEntries] = useState<Entry[]>([]);
   const [tags, setTags] = useState<string[]>([]);
-  const [typeFilter, setTypeFilter] = useState<EntryType | "all">("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
   const [tagFilter, setTagFilter] = useState<string>("all");
   const [loading, setLoading] = useState(true);
 
@@ -69,15 +72,15 @@ export default function TimelinePage() {
           <select
             id="type-filter"
             value={typeFilter}
-            onChange={(e) =>
-              setTypeFilter(e.target.value as EntryType | "all")
-            }
+            onChange={(e) => setTypeFilter(e.target.value)}
             className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
           >
             <option value="all">{t("allTypes")}</option>
-            {ENTRY_TYPES.map((type) => (
+            {allTypeIds.map((type) => (
               <option key={type} value={type}>
-                {te(type)}
+                {resolveTypeLabel(type, customTypes, (core) =>
+                  te(core as CoreEntryType)
+                )}
               </option>
             ))}
           </select>

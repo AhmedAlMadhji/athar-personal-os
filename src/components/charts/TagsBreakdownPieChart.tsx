@@ -30,7 +30,7 @@ export function TagsBreakdownPieChart({
   const chartData = useMemo(
     () =>
       data.map((item) => ({
-        name: `#${item.tag}`,
+        name: item.tag,
         value: item.count,
         fill: item.fill,
       })),

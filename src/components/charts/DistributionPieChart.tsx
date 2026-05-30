@@ -12,9 +12,11 @@ import {
 import { ChartCard } from "@/components/charts/ChartCard";
 import { ChartPlaceholder, ChartWrapper } from "@/components/charts/ChartWrapper";
 import { getChartTooltipProps } from "@/components/charts/chartTooltipProps";
+import { useEntryTypes } from "@/hooks/useEntryTypes";
 import { useChartTheme } from "@/hooks/useChartTheme";
+import { resolveTypeLabel } from "@/lib/entryTypesService";
 import type { DistributionDataPoint } from "@/types/analytics";
-import type { EntryType } from "@/types/entry";
+import type { CoreEntryType } from "@/types/entry";
 
 interface DistributionPieChartProps {
   data: DistributionDataPoint[];
@@ -23,6 +25,7 @@ interface DistributionPieChartProps {
 export function DistributionPieChart({ data }: DistributionPieChartProps) {
   const t = useTranslations("analytics");
   const te = useTranslations("entryTypes");
+  const { customTypes } = useEntryTypes();
   const chartTheme = useChartTheme();
   const tooltipProps = getChartTooltipProps(chartTheme);
 
@@ -30,9 +33,11 @@ export function DistributionPieChart({ data }: DistributionPieChartProps) {
     () =>
       data.map((item) => ({
         ...item,
-        name: te(item.name as EntryType),
+        name: resolveTypeLabel(item.name, customTypes, (core) =>
+          te(core as CoreEntryType)
+        ),
       })),
-    [data, te]
+    [data, customTypes, te]
   );
 
   if (data.length === 0) {

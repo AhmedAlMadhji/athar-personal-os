@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useSettings } from "@/components/SettingsProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ImportProfileCard } from "@/components/ImportProfileCard";
+import { CustomEntryTypesCard } from "@/components/settings/CustomEntryTypesCard";
 import { PageHeader } from "@/components/PageHeader";
 import { Link } from "@/i18n/navigation";
 import type { ThemeMode } from "@/types/settings";
@@ -67,6 +68,8 @@ export default function SettingsPage() {
           <LanguageSwitcher />
         </div>
       </section>
+
+      <CustomEntryTypesCard />
 
       <section className="rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-900/80">
         <h2 className="text-start text-lg font-semibold text-zinc-900 dark:text-zinc-50">

@@ -1,4 +1,5 @@
 import { getAllEntries } from "@/lib/entriesService";
+import { getInsightConfidence } from "@/lib/analyticsMaturity";
 import type {
   AnalyticsData,
   BarComparisonPoint,
@@ -11,14 +12,9 @@ import type {
   Insight,
   TagDistributionPoint,
 } from "@/types/analytics";
-import type { Entry, EntryType } from "@/types/entry";
-
-const DISTRIBUTION_COLORS: Record<EntryType, string> = {
-  strength: "#10b981",
-  weakness: "#f43f5e",
-  skill: "#0ea5e9",
-  note: "#f59e0b",
-};
+import { getCustomEntryTypes, isCoreEntryType, resolveTypeChartFill } from "@/lib/entryTypesService";
+import type { CustomEntryType } from "@/types/customEntryType";
+import type { Entry } from "@/types/entry";
 
 const TAG_COLORS = [
   "#6366f1",
@@ -29,9 +25,8 @@ const TAG_COLORS = [
   "#f43f5e",
 ];
 
-const HEATMAP_WEEKS = 12;
-const ENTRY_TYPES: EntryType[] = ["strength", "weakness", "skill", "note"];
-
+/** ~1 year of weeks — matches GitHub contribution graph density */
+const HEATMAP_WEEKS = 53;
 function avg(values: number[]): number {
   if (values.length === 0) return 0;
   return values.reduce((sum, value) => sum + value, 0) / values.length;
@@ -52,6 +47,14 @@ function startOfWeek(date: Date): Date {
   const day = d.getDay();
   const diff = day === 0 ? -6 : 1 - day;
   d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+/** Sunday-based week — matches heatmap rows (0 = Sun … 6 = Sat). */
+function startOfWeekSunday(date: Date): Date {
+  const d = new Date(date);
+  d.setDate(d.getDate() - d.getDay());
   d.setHours(0, 0, 0, 0);
   return d;
 }
@@ -90,13 +93,22 @@ export function computeGrowthOverTime(entries: Entry[]): GrowthDataPoint[] {
     }));
 }
 
-export function computeTypeComparison(entries: Entry[]): BarComparisonPoint[] {
-  return ENTRY_TYPES.map((type) => ({
-    type,
-    label: type,
-    count: entries.filter((entry) => entry.type === type).length,
-    fill: DISTRIBUTION_COLORS[type],
-  })).filter((item) => item.count > 0);
+export function computeTypeComparison(
+  entries: Entry[],
+  customTypes: CustomEntryType[]
+): BarComparisonPoint[] {
+  const counts = new Map<string, number>();
+  for (const entry of entries) {
+    counts.set(entry.type, (counts.get(entry.type) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([type, count]) => ({
+      type,
+      label: type,
+      count,
+      fill: resolveTypeChartFill(type, customTypes),
+    }))
+    .sort((a, b) => b.count - a.count);
 }
 
 export function computeActivityConsistency(
@@ -148,18 +160,40 @@ export function computeEffortOutcomeCorrelation(
   );
 }
 
-function dominantType(entries: Entry[]): EntryType | null {
-  const comparison = computeTypeComparison(entries);
+function dominantType(entries: Entry[], customTypes: CustomEntryType[]): string | null {
+  const comparison = computeTypeComparison(entries, customTypes);
   if (comparison.length === 0) return null;
-  return comparison.sort((a, b) => b.count - a.count)[0].type;
+  return comparison[0].type;
 }
 
-function buildGrowthInsight(entries: Entry[], growth: GrowthDataPoint[]): ChartInsightMeta {
+function buildGrowthInsight(
+  entryCount: number,
+  growth: GrowthDataPoint[]
+): ChartInsightMeta {
+  const confidence = getInsightConfidence(entryCount);
   const ratings = growth.map((point) => point.averageRating);
   const direction = trendDirection(ratings);
   const latest = ratings.at(-1) ?? 0;
   const earliest = ratings[0] ?? latest;
   const delta = Math.abs(latest - earliest).toFixed(1);
+
+  if (confidence === "low") {
+    return {
+      titleKey: "chartInsights.growth.titleEarly",
+      descriptionKey: "chartInsights.growth.description",
+      takeawayKey: "chartInsights.growth.takeawayEarly",
+      takeawayValues: { latest: latest.toFixed(1) },
+    };
+  }
+
+  if (confidence === "medium") {
+    return {
+      titleKey: `chartInsights.growth.titleMedium.${direction}`,
+      descriptionKey: "chartInsights.growth.description",
+      takeawayKey: `chartInsights.growth.takeawayMedium.${direction}`,
+      takeawayValues: { delta, latest: latest.toFixed(1) },
+    };
+  }
 
   return {
     titleKey: `chartInsights.growth.title.${direction}`,
@@ -169,8 +203,16 @@ function buildGrowthInsight(entries: Entry[], growth: GrowthDataPoint[]): ChartI
   };
 }
 
-function buildTypeComparisonInsight(entries: Entry[]): ChartInsightMeta {
-  const top = dominantType(entries);
+function buildTypeComparisonInsight(
+  entryCount: number,
+  entries: Entry[],
+  customTypes: CustomEntryType[]
+): ChartInsightMeta {
+  const confidence = getInsightConfidence(entryCount);
+  const top = dominantType(entries, customTypes);
+  const topCount = top
+    ? entries.filter((entry) => entry.type === top).length
+    : 0;
   const strengths = entries.filter((entry) => entry.type === "strength").length;
   const weaknesses = entries.filter((entry) => entry.type === "weakness").length;
   const ratio =
@@ -178,8 +220,25 @@ function buildTypeComparisonInsight(entries: Entry[]): ChartInsightMeta {
       ? Math.round((strengths / (strengths + weaknesses)) * 100)
       : 0;
 
+  if (!top) {
+    return {
+      titleKey: "chartInsights.typeComparison.titleEmpty",
+      descriptionKey: "chartInsights.typeComparison.description",
+      takeawayKey: "chartInsights.typeComparison.takeawayEarly",
+    };
+  }
+
+  if (confidence !== "high" || !isCoreEntryType(top)) {
+    return {
+      titleKey: "chartInsights.typeComparison.titleEarly",
+      descriptionKey: "chartInsights.typeComparison.description",
+      takeawayKey: "chartInsights.typeComparison.takeawayEarly",
+      takeawayValues: { type: top, count: topCount, ratio },
+    };
+  }
+
   return {
-    titleKey: top ? "chartInsights.typeComparison.title" : "chartInsights.typeComparison.titleEmpty",
+    titleKey: `chartInsights.typeComparison.titleByType.${top}`,
     descriptionKey: "chartInsights.typeComparison.description",
     takeawayKey:
       ratio >= 55
@@ -187,17 +246,37 @@ function buildTypeComparisonInsight(entries: Entry[]): ChartInsightMeta {
         : ratio <= 45
           ? "chartInsights.typeComparison.takeawayWeak"
           : "chartInsights.typeComparison.takeawayBalanced",
-    takeawayValues: { type: top ?? "strength", ratio },
+    takeawayValues: { type: top, count: topCount, ratio },
   };
 }
 
 function buildConsistencyInsight(
+  entryCount: number,
   consistency: ConsistencyDataPoint[]
 ): ChartInsightMeta {
+  const confidence = getInsightConfidence(entryCount);
   const counts = consistency.map((point) => point.entryCount);
   const direction = trendDirection(counts);
   const total = counts.reduce((sum, count) => sum + count, 0);
   const peak = Math.max(...counts, 0);
+
+  if (confidence === "low") {
+    return {
+      titleKey: "chartInsights.consistency.titleEarly",
+      descriptionKey: "chartInsights.consistency.description",
+      takeawayKey: "chartInsights.consistency.takeawayEarly",
+      takeawayValues: { total, peak },
+    };
+  }
+
+  if (confidence === "medium") {
+    return {
+      titleKey: `chartInsights.consistency.titleMedium.${direction}`,
+      descriptionKey: "chartInsights.consistency.description",
+      takeawayKey: `chartInsights.consistency.takeawayMedium.${direction}`,
+      takeawayValues: { total, peak },
+    };
+  }
 
   return {
     titleKey: `chartInsights.consistency.title.${direction}`,
@@ -207,9 +286,32 @@ function buildConsistencyInsight(
   };
 }
 
-function buildTagsInsight(tags: TagDistributionPoint[] | null): ChartInsightMeta | null {
+function buildTagsInsight(
+  entryCount: number,
+  tags: TagDistributionPoint[] | null
+): ChartInsightMeta | null {
   if (!tags || tags.length === 0) return null;
   const top = tags[0];
+  const confidence = getInsightConfidence(entryCount);
+
+  if (confidence === "low") {
+    return {
+      titleKey: "chartInsights.tags.titleEarly",
+      descriptionKey: "chartInsights.tags.description",
+      takeawayKey: "chartInsights.tags.takeawayEarly",
+      takeawayValues: { tag: top.tag, count: top.count },
+    };
+  }
+
+  if (confidence === "medium") {
+    return {
+      titleKey: "chartInsights.tags.titleMedium",
+      descriptionKey: "chartInsights.tags.description",
+      takeawayKey: "chartInsights.tags.takeawayMedium",
+      takeawayValues: { tag: top.tag, count: top.count },
+    };
+  }
+
   return {
     titleKey: "chartInsights.tags.title",
     descriptionKey: "chartInsights.tags.description",
@@ -218,12 +320,24 @@ function buildTagsInsight(tags: TagDistributionPoint[] | null): ChartInsightMeta
   };
 }
 
-function buildCorrelationInsight(correlation: CorrelationPoint[]): ChartInsightMeta {
+function buildCorrelationInsight(
+  entryCount: number,
+  correlation: CorrelationPoint[]
+): ChartInsightMeta {
   if (correlation.length < 2) {
     return {
-      titleKey: "chartInsights.correlation.titleEmpty",
+      titleKey: "chartInsights.correlation.titleEarly",
       descriptionKey: "chartInsights.correlation.description",
-      takeawayKey: "chartInsights.correlation.takeawayEmpty",
+      takeawayKey: "chartInsights.correlation.takeawayEarly",
+    };
+  }
+
+  const confidence = getInsightConfidence(entryCount);
+  if (confidence !== "high") {
+    return {
+      titleKey: "chartInsights.correlation.titleEarly",
+      descriptionKey: "chartInsights.correlation.description",
+      takeawayKey: "chartInsights.correlation.takeawayEarly",
     };
   }
 
@@ -244,21 +358,33 @@ function buildCorrelationInsight(correlation: CorrelationPoint[]): ChartInsightM
   };
 }
 
-function buildHeatmapInsight(heatmap: HeatmapDay[]): ChartInsightMeta {
+function buildHeatmapInsight(
+  entryCount: number,
+  heatmap: HeatmapDay[]
+): ChartInsightMeta {
   const activeDays = heatmap.filter((day) => day.count > 0).length;
   const totalEntries = heatmap.reduce((sum, day) => sum + day.count, 0);
   const streak = heatmap.reduce((max, day) => Math.max(max, day.count), 0);
+  const confidence = getInsightConfidence(entryCount);
 
+  if (confidence !== "high") {
+    return {
+      titleKey: "chartInsights.heatmap.titlePreview",
+      descriptionKey: "chartInsights.heatmap.description",
+      takeawayKey: "chartInsights.heatmap.takeawayPreview",
+      takeawayValues: { activeDays, totalEntries, streak },
+    };
+  }
+
+  const wellSpread = activeDays >= 14;
   return {
-    titleKey:
-      activeDays >= 14
-        ? "chartInsights.heatmap.titleActive"
-        : "chartInsights.heatmap.titleSparse",
+    titleKey: wellSpread
+      ? "chartInsights.heatmap.titleActive"
+      : "chartInsights.heatmap.titleModerate",
     descriptionKey: "chartInsights.heatmap.description",
-    takeawayKey:
-      activeDays >= 14
-        ? "chartInsights.heatmap.takeawayActive"
-        : "chartInsights.heatmap.takeawaySparse",
+    takeawayKey: wellSpread
+      ? "chartInsights.heatmap.takeawayActive"
+      : "chartInsights.heatmap.takeawayModerate",
     takeawayValues: { activeDays, totalEntries, streak },
   };
 }
@@ -269,37 +395,39 @@ function buildAnalyticsInsights(
   consistency: ConsistencyDataPoint[],
   tagsBreakdown: TagDistributionPoint[] | null,
   correlation: CorrelationPoint[],
-  heatmap: HeatmapDay[]
+  heatmap: HeatmapDay[],
+  customTypes: CustomEntryType[]
 ): AnalyticsData["insights"] {
+  const entryCount = entries.length;
   return {
-    growth: buildGrowthInsight(entries, growth),
-    typeComparison: buildTypeComparisonInsight(entries),
-    consistency: buildConsistencyInsight(consistency),
-    tags: buildTagsInsight(tagsBreakdown),
-    correlation: buildCorrelationInsight(correlation),
-    heatmap: buildHeatmapInsight(heatmap),
+    growth: buildGrowthInsight(entryCount, growth),
+    typeComparison: buildTypeComparisonInsight(entryCount, entries, customTypes),
+    consistency: buildConsistencyInsight(entryCount, consistency),
+    tags: buildTagsInsight(entryCount, tagsBreakdown),
+    correlation: buildCorrelationInsight(entryCount, correlation),
+    heatmap: buildHeatmapInsight(entryCount, heatmap),
   };
 }
 
 export function computeTypeDistribution(
-  entries: Entry[]
+  entries: Entry[],
+  customTypes: CustomEntryType[]
 ): DistributionDataPoint[] {
-  return ENTRY_TYPES
-    .map((type) => ({
-      name: type,
-      value: entries.filter((e) => e.type === type).length,
-      type,
-      fill: DISTRIBUTION_COLORS[type],
-    }))
-    .filter((item) => item.value > 0);
+  return computeTypeComparison(entries, customTypes).map((item) => ({
+    name: item.type,
+    value: item.count,
+    type: item.type,
+    fill: item.fill,
+  }));
 }
 
 export function computeActivityHeatmap(entries: Entry[]): HeatmapDay[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const totalDays = HEATMAP_WEEKS * 7;
-  const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - totalDays + 1);
+
+  const rangeStart = new Date(today);
+  rangeStart.setDate(rangeStart.getDate() - (HEATMAP_WEEKS * 7 - 1));
+  const gridStart = startOfWeekSunday(rangeStart);
 
   const counts = new Map<string, number>();
   for (const entry of entries) {
@@ -307,21 +435,22 @@ export function computeActivityHeatmap(entries: Entry[]): HeatmapDay[] {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
 
+  const dayMs = 24 * 60 * 60 * 1000;
   const heatmap: HeatmapDay[] = [];
-  const cursor = new Date(startDate);
+  const cursor = new Date(gridStart);
 
   while (cursor <= today) {
     const date = toDateKey(cursor);
-    const weekStart = startOfWeek(cursor);
+    const dayOfWeek = cursor.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
     const weekIndex = Math.floor(
-      (weekStart.getTime() - startOfWeek(startDate).getTime()) /
-        (7 * 24 * 60 * 60 * 1000)
+      (cursor.getTime() - gridStart.getTime()) / (7 * dayMs)
     );
+
     heatmap.push({
       date,
       count: counts.get(date) ?? 0,
-      dayOfWeek: cursor.getDay(),
-      weekIndex: Math.max(0, weekIndex),
+      dayOfWeek,
+      weekIndex,
     });
     cursor.setDate(cursor.getDate() + 1);
   }
@@ -330,6 +459,31 @@ export function computeActivityHeatmap(entries: Entry[]): HeatmapDay[] {
 }
 
 export function generateInsights(entries: Entry[]): Insight[] {
+  if (entries.length === 0) {
+    return [{ id: "empty", tone: "neutral", messageKey: "empty" }];
+  }
+
+  if (entries.length <= 3) {
+    return [
+      {
+        id: "onboarding-early",
+        tone: "neutral",
+        messageKey: "onboardingEarly",
+        values: { count: entries.length },
+      },
+      {
+        id: "onboarding-honest",
+        tone: "positive",
+        messageKey: "onboardingHonest",
+      },
+      {
+        id: "onboarding-next",
+        tone: "neutral",
+        messageKey: "onboardingNext",
+      },
+    ];
+  }
+
   const insights: Insight[] = [];
   const now = Date.now();
   const dayMs = 24 * 60 * 60 * 1000;
@@ -345,15 +499,6 @@ export function generateInsights(entries: Entry[]): Insight[] {
     return age > 14 * dayMs && age <= 28 * dayMs;
   });
 
-  if (entries.length === 0) {
-    insights.push({
-      id: "empty",
-      tone: "neutral",
-      messageKey: "empty",
-    });
-    return insights;
-  }
-
   const lastEntry = entries.reduce((latest, e) =>
     new Date(e.createdAt) > new Date(latest.createdAt) ? e : latest
   );
@@ -361,7 +506,7 @@ export function generateInsights(entries: Entry[]): Insight[] {
     (now - new Date(lastEntry.createdAt).getTime()) / dayMs
   );
 
-  if (daysSinceLastEntry >= 7) {
+  if (entries.length >= 10 && daysSinceLastEntry >= 7) {
     insights.push({
       id: "low-activity",
       tone: "warning",
@@ -395,7 +540,12 @@ export function generateInsights(entries: Entry[]): Insight[] {
   const recentAvg = avg(last14Days);
   const priorAvg = avg(days14to28);
 
-  if (last14Days.length >= 2 && days14to28.length >= 2 && recentAvg > priorAvg) {
+  if (
+    entries.length >= 15 &&
+    last14Days.length >= 2 &&
+    days14to28.length >= 2 &&
+    recentAvg > priorAvg
+  ) {
     insights.push({
       id: "positive-rating-trend",
       tone: "positive",
@@ -430,8 +580,9 @@ export function generateInsights(entries: Entry[]): Insight[] {
     last7Days.filter((e) => e.type === "strength").flatMap((e) => e.tags)
   );
   for (const tag of recentStrengthTags) {
+    if (entries.length < 20) break;
     const tagEntries = entries.filter((e) => e.tags.includes(tag));
-    if (tagEntries.length < 3) continue;
+    if (tagEntries.length < 4) continue;
     const sorted = [...tagEntries].sort(
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
@@ -465,6 +616,7 @@ export function generateInsights(entries: Entry[]): Insight[] {
 
 export async function getAnalyticsData(): Promise<AnalyticsData> {
   const entries = await getAllEntries();
+  const customTypes = await getCustomEntryTypes();
   const growth = computeGrowthOverTime(entries);
   const consistency = computeActivityConsistency(entries);
   const tagsBreakdown = computeTagsBreakdown(entries);
@@ -472,9 +624,10 @@ export async function getAnalyticsData(): Promise<AnalyticsData> {
   const heatmap = computeActivityHeatmap(entries);
 
   return {
+    entryCount: entries.length,
     growth,
-    distribution: computeTypeDistribution(entries),
-    typeComparison: computeTypeComparison(entries),
+    distribution: computeTypeDistribution(entries, customTypes),
+    typeComparison: computeTypeComparison(entries, customTypes),
     consistency,
     tagsBreakdown,
     correlation,
@@ -486,7 +639,8 @@ export async function getAnalyticsData(): Promise<AnalyticsData> {
       consistency,
       tagsBreakdown,
       correlation,
-      heatmap
+      heatmap,
+      customTypes
     ),
   };
 }

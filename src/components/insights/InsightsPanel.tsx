@@ -5,6 +5,8 @@ import type { Insight, InsightTone } from "@/types/analytics";
 
 interface InsightsPanelProps {
   insights: Insight[];
+  title?: string;
+  description?: string;
 }
 
 const toneStyles: Record<
@@ -34,18 +36,22 @@ const toneIcons: Record<InsightTone, string> = {
   neutral: "·",
 };
 
-export function InsightsPanel({ insights }: InsightsPanelProps) {
+export function InsightsPanel({
+  insights,
+  title,
+  description,
+}: InsightsPanelProps) {
   const t = useTranslations("analytics");
   const ti = useTranslations("insights");
 
   return (
     <div className="rounded-lg border border-zinc-200/80 bg-gradient-to-br from-white via-white to-indigo-50/20 dark:border-zinc-800/80 dark:from-zinc-900 dark:via-zinc-900 dark:to-indigo-950/10">
-      <div className="border-b border-zinc-100 px-3 py-2 dark:border-zinc-800/80">
+      <div className="border-b border-zinc-100 px-4 py-3 dark:border-zinc-800/80">
         <h3 className="text-start text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          {t("insightsTitle")}
+          {title ?? t("insightsTitle")}
         </h3>
         <p className="mt-0.5 text-start text-xs text-zinc-500 dark:text-zinc-400">
-          {t("insightsDesc")}
+          {description ?? t("insightsDesc")}
         </p>
       </div>
       <ul className="divide-y divide-zinc-100 dark:divide-zinc-800/80">
@@ -54,7 +60,7 @@ export function InsightsPanel({ insights }: InsightsPanelProps) {
           return (
             <li
               key={insight.id}
-              className={`flex gap-2.5 px-3 py-2.5 ${style.bg}`}
+              className={`flex gap-2.5 px-4 py-3 ${style.bg}`}
             >
               <span
                 className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white/80 text-xs font-bold dark:bg-zinc-900/80 ${style.icon}`}

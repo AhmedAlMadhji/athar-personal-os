@@ -106,6 +106,87 @@ a {
   direction: ltr;
 }
 
+/* GitHub-style contribution heatmap — grid only, no flex */
+.heatmap-frame {
+  display: grid;
+  grid-template-columns: 2rem max-content;
+  grid-template-rows: 1rem repeat(7, 11px);
+  column-gap: 3px;
+  row-gap: 3px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.heatmap-months {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat(var(--heatmap-weeks), 11px);
+  gap: 3px;
+}
+
+.heatmap-month-cell {
+  position: relative;
+  width: 11px;
+  height: 1rem;
+}
+
+.heatmap-month-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  font-size: 9px;
+  line-height: 1rem;
+  color: rgb(161 161 170);
+}
+
+.dark .heatmap-month-label {
+  color: rgb(113 113 122);
+}
+
+.heatmap-day-label {
+  grid-column: 1;
+  display: block;
+  height: 11px;
+  padding-inline-end: 4px;
+  text-align: end;
+  font-size: 9px;
+  line-height: 11px;
+  color: rgb(161 161 170);
+}
+
+.dark .heatmap-day-label {
+  color: rgb(113 113 122);
+}
+
+.heatmap-cells {
+  grid-column: 2;
+  grid-row: 2 / span 7;
+}
+
+.contribution-heatmap-grid {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 11px);
+  gap: 3px;
+}
+
+.heatmap-legend {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-content: end;
+  gap: 3px;
+  font-size: 10px;
+  color: rgb(161 161 170);
+}
+
+.dark .heatmap-legend {
+  color: rgb(113 113 122);
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;

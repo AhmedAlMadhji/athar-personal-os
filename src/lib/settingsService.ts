@@ -28,6 +28,7 @@ export async function getSettings(): Promise<UserSettings> {
           ? legacyLocale
           : DEFAULT_SETTINGS.locale,
       theme: legacyDark ? "dark" : DEFAULT_SETTINGS.theme,
+      customEntryTypes: [],
     };
 
     await db.settings.put(settings);
@@ -37,11 +38,16 @@ export async function getSettings(): Promise<UserSettings> {
     }
   }
 
+  if (!settings.customEntryTypes) {
+    settings.customEntryTypes = [];
+    await db.settings.put(settings);
+  }
+
   return settings;
 }
 
 export async function updateSettings(
-  partial: Partial<Pick<UserSettings, "theme" | "locale">>
+  partial: Partial<Pick<UserSettings, "theme" | "locale" | "customEntryTypes">>
 ): Promise<UserSettings> {
   const current = await getSettings();
   const updated: UserSettings = {

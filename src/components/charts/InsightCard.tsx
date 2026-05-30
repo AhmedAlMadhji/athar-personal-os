@@ -4,6 +4,7 @@ interface InsightCardProps {
   takeaway?: string;
   children: React.ReactNode;
   className?: string;
+  bodyClassName?: string;
 }
 
 export function InsightCard({
@@ -12,12 +13,13 @@ export function InsightCard({
   takeaway,
   children,
   className = "",
+  bodyClassName = "",
 }: InsightCardProps) {
   return (
     <article
       className={`flex min-h-0 flex-col rounded-lg border border-zinc-200/80 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/90 ${className}`}
     >
-      <header className="border-b border-zinc-100 px-3 py-2.5 dark:border-zinc-800/80">
+      <header className="border-b border-zinc-100 px-4 py-3 dark:border-zinc-800/80">
         <h3 className="text-start text-sm font-semibold leading-snug text-zinc-900 dark:text-zinc-50">
           {title}
         </h3>
@@ -26,10 +28,14 @@ export function InsightCard({
         </p>
       </header>
 
-      <div className="min-h-0 px-2 py-2">{children}</div>
+      <div
+        className={`min-h-0 px-4 pb-5 pt-4 ${bodyClassName}`.trim()}
+      >
+        {children}
+      </div>
 
       {takeaway && (
-        <footer className="border-t border-zinc-100 bg-zinc-50/80 px-3 py-2 dark:border-zinc-800/80 dark:bg-zinc-950/40">
+        <footer className="mt-auto border-t border-zinc-100 bg-zinc-50/80 px-4 py-3.5 dark:border-zinc-800/80 dark:bg-zinc-950/40">
           <p className="text-start text-xs font-medium leading-relaxed text-indigo-700 dark:text-indigo-300">
             {takeaway}
           </p>

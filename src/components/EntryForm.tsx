@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useEntryTypes } from "@/hooks/useEntryTypes";
 import { useFormSubmitGuard } from "@/hooks/useFormSubmitGuard";
-import type { Entry, EntryInput, EntryType } from "@/types/entry";
-import { ENTRY_TYPES } from "@/types/entry";
+import type { Entry, EntryInput } from "@/types/entry";
 import { formatTagsForInput } from "@/lib/entriesService";
 import { containsArabicComma, parseTags } from "@/lib/parseTags";
 
@@ -22,9 +22,10 @@ export function EntryForm({ initial, onSubmit, submitLabel }: EntryFormProps) {
   const te = useTranslations("entryTypes");
   const tc = useTranslations("common");
   const { isSubmitting, run } = useFormSubmitGuard();
+  const { coreTypes, customTypes, allTypeIds, ready } = useEntryTypes();
 
   const [title, setTitle] = useState(initial?.title ?? "");
-  const [type, setType] = useState<EntryType>(initial?.type ?? "strength");
+  const [type, setType] = useState<string>(initial?.type ?? "strength");
   const [description, setDescription] = useState(initial?.description ?? "");
   const [tagsInput, setTagsInput] = useState(
     initial ? formatTagsForInput(initial.tags) : "",
@@ -92,14 +93,30 @@ export function EntryForm({ initial, onSubmit, submitLabel }: EntryFormProps) {
           <select
             id="type"
             value={type}
-            onChange={(e) => setType(e.target.value as EntryType)}
+            onChange={(e) => setType(e.target.value)}
             className={fieldClassName}
+            disabled={!ready}
           >
-            {ENTRY_TYPES.map((entryType) => (
-              <option key={entryType} value={entryType}>
-                {te(entryType)}
-              </option>
-            ))}
+            <optgroup label={t("coreTypesGroup")}>
+              {coreTypes.map((entryType) => (
+                <option key={entryType} value={entryType}>
+                  {te(entryType)}
+                </option>
+              ))}
+            </optgroup>
+            {customTypes.length > 0 && (
+              <optgroup label={t("customTypesGroup")}>
+                {customTypes.map((custom) => (
+                  <option key={custom.id} value={custom.id}>
+                    {custom.label}
+                  </option>
+                ))}
+              </optgroup>
+            )}
+            {initial &&
+              !allTypeIds.includes(initial.type) && (
+                <option value={initial.type}>{initial.type}</option>
+              )}
           </select>
         </div>
 

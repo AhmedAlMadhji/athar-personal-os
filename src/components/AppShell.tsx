@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { MainContent } from "@/components/layout/MainContent";
 import { useIsDesktop } from "@/hooks/useIsDesktop";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -56,12 +57,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </header>
 
         <main className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto touch-pan-y [-webkit-overflow-scrolling:touch]">
-          <div className="mx-auto min-h-0 w-full max-w-6xl flex-1 px-4 py-3 sm:px-5 sm:py-4 lg:px-6">
-            {children}
-          </div>
+          <MainContent>{children}</MainContent>
         </main>
 
-        <footer className="shrink-0 border-t border-zinc-200/80 py-2 text-center text-[11px] text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-500">
+        <footer className="mt-1 shrink-0 border-t border-zinc-200/80 px-4 py-3.5 text-center text-[11px] text-zinc-500 dark:border-zinc-800/80 dark:text-zinc-500">
           {tApp("footer")}
         </footer>
       </div>

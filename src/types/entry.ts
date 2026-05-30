@@ -1,4 +1,14 @@
-export type EntryType = "strength" | "weakness" | "skill" | "note";
+export const CORE_ENTRY_TYPES = [
+  "strength",
+  "weakness",
+  "skill",
+  "note",
+] as const;
+
+export type CoreEntryType = (typeof CORE_ENTRY_TYPES)[number];
+
+/** Core types or `custom:{uuid}` ids from settings. */
+export type EntryType = CoreEntryType | string;
 
 export interface Entry {
   id: string;
@@ -29,22 +39,18 @@ export interface DashboardStats {
   topTags: { tag: string; count: number }[];
 }
 
-export const ENTRY_TYPES: EntryType[] = [
-  "strength",
-  "weakness",
-  "skill",
-  "note",
-];
+/** @deprecated Use CORE_ENTRY_TYPES */
+export const ENTRY_TYPES: CoreEntryType[] = [...CORE_ENTRY_TYPES];
 
-export const ENTRY_TYPE_LABELS: Record<EntryType, string> = {
+export const ENTRY_TYPE_LABELS: Record<CoreEntryType, string> = {
   strength: "Strength",
   weakness: "Weakness",
   skill: "Skill",
   note: "Note",
 };
 
-export const ENTRY_TYPE_COLORS: Record<
-  EntryType,
+export const CORE_ENTRY_TYPE_COLORS: Record<
+  CoreEntryType,
   { bg: string; text: string; border: string }
 > = {
   strength: {
@@ -68,3 +74,6 @@ export const ENTRY_TYPE_COLORS: Record<
     border: "border-amber-500/30",
   },
 };
+
+/** @deprecated Use resolveTypeBadgeClasses from entryTypesService */
+export const ENTRY_TYPE_COLORS = CORE_ENTRY_TYPE_COLORS;

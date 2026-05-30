@@ -1,5 +1,3 @@
-import type { EntryType } from "@/types/entry";
-
 export interface GrowthDataPoint {
   period: string;
   label: string;
@@ -10,12 +8,12 @@ export interface GrowthDataPoint {
 export interface DistributionDataPoint {
   name: string;
   value: number;
-  type: EntryType;
+  type: string;
   fill: string;
 }
 
 export interface BarComparisonPoint {
-  type: EntryType;
+  type: string;
   label: string;
   count: number;
   fill: string;
@@ -55,6 +53,7 @@ export interface ChartInsightMeta {
 }
 
 export interface AnalyticsData {
+  entryCount: number;
   growth: GrowthDataPoint[];
   distribution: DistributionDataPoint[];
   typeComparison: BarComparisonPoint[];

@@ -58,7 +58,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 pb-4">
+    <div className="mx-auto max-w-3xl space-y-8">
       <header className="relative overflow-hidden rounded-xl border border-zinc-200/80 bg-gradient-to-br from-white via-white to-indigo-50/40 p-6 dark:border-zinc-800/80 dark:from-zinc-900 dark:via-zinc-900 dark:to-indigo-950/30 sm:p-8">
         <p className="text-start text-[11px] font-medium uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
           {t("hero.eyebrow")}

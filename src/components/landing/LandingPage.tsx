@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { FaGithub } from "react-icons/fa";
+import { IconCheck } from "@/components/icons/AppIcons";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ScrollReveal } from "@/components/landing/ScrollReveal";
 import { Link } from "@/i18n/navigation";
@@ -234,9 +235,10 @@ export function LandingPage() {
                     key={item}
                     className="flex items-start gap-2 text-start text-sm text-zinc-700 dark:text-zinc-300"
                   >
-                    <span className="text-emerald-500" aria-hidden>
-                      ✓
-                    </span>
+                    <IconCheck
+                      className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500"
+                      aria-hidden
+                    />
                     {item}
                   </li>
                 ))}

@@ -13,6 +13,7 @@
     "addEntry": "Add Entry",
     "timeline": "Timeline",
     "analytics": "Analytics",
+    "achievements": "Achievements",
     "insights": "Insights",
     "settings": "Settings",
     "about": "About"
@@ -122,7 +123,8 @@
     "backToTimeline": "← Back to timeline",
     "viewAll": "View all →",
     "closeMenu": "Close menu",
-    "openMenu": "Open menu"
+    "openMenu": "Open menu",
+    "earnedOn": "Earned {date}"
   },
   "entryTypes": {
     "strength": "Strength",
@@ -221,6 +223,8 @@
   "form": {
     "title": "Title",
     "type": "Type",
+    "coreTypesGroup": "Core dimensions",
+    "customTypesGroup": "Your custom types",
     "description": "Description",
     "tags": "Tags",
     "tagsWhat": "Tags help organize your thoughts and make them easier to find later.",
@@ -251,6 +255,38 @@
     "heatmapEntries": "{count, plural, one {# entry} other {# entries}}",
     "insightsTitle": "Detected patterns",
     "insightsDesc": "Automated signals from your reflection history",
+    "maturity": {
+      "emptyTitle": "Still gathering enough data",
+      "emptyDescription": {
+        "growth": "Add more reflections over the coming weeks to see your real rating trend.",
+        "consistency": "Log reflections regularly for several weeks before we show your weekly rhythm.",
+        "typeComparison": "After about ten reflections, we can compare your focus areas (strength, weakness, skill, note).",
+        "correlation": "We need multiple active weeks to see whether effort aligns with how you feel.",
+        "tags": "Use tags in your reflections — when they repeat, your top themes will appear here.",
+        "heatmap": "Add more reflections in the coming days to see meaningful daily rhythm patterns."
+      },
+      "stageLabel": {
+        "1": "Getting started",
+        "2": "Building basics",
+        "3": "Finding patterns",
+        "4": "Deep analysis"
+      },
+      "stageTitle": {
+        "1": "Building a clearer picture",
+        "2": "Early patterns emerging",
+        "3": "Your patterns are taking shape",
+        "4": "Deep habit analysis"
+      },
+      "stageDescription": {
+        "1": "You have {count} reflections — charts are visible; wording stays cautious until data builds.",
+        "2": "You have {count} reflections — all charts are shown; we describe trends without full certainty.",
+        "3": "You have {count} reflections — patterns are clearer; language is bolder but still measured.",
+        "4": "You have {count} reflections — deeper analytics reflect your long-term habits."
+      },
+      "stageCta": "Add a reflection",
+      "onboardingInsightsTitle": "Getting started",
+      "onboardingInsightsDesc": "Honest guidance until you have enough data"
+    },
     "days": {
       "sun": "Sun",
       "mon": "Mon",
@@ -262,12 +298,24 @@
     },
     "chartInsights": {
       "growth": {
+        "titleEarly": "A first look at your ratings",
+        "titleMedium": {
+          "up": "Your ratings seem to be rising lately",
+          "down": "Your ratings seem to be dipping lately",
+          "flat": "Your ratings look fairly steady so far"
+        },
         "title": {
           "up": "Your self-assessment is trending upward",
           "down": "Recent ratings suggest a dip in confidence",
           "flat": "Your growth pace is steady, not volatile"
         },
         "description": "Weekly average rating — higher means stronger self-assessment over time.",
+        "takeawayEarly": "Latest average is near {latest}/10 — more entries will clarify the trend.",
+        "takeawayMedium": {
+          "up": "Average rating is leaning up (~{delta} pts) — may shift with more data. Latest: {latest}/10.",
+          "down": "Average rating is leaning down (~{delta} pts) — keep logging to see if it holds.",
+          "flat": "Ratings sit near {latest}/10 — consistency matters more than spikes right now."
+        },
         "takeaway": {
           "up": "Ratings rose by {delta} points — your reflections are translating into higher confidence (latest: {latest}/10).",
           "down": "Ratings dropped {delta} points recently — consider revisiting what changed in your routine.",
@@ -275,20 +323,39 @@
         }
       },
       "typeComparison": {
-        "title": "{type} dominates your reflection focus",
+        "titleByType": {
+          "strength": "Most of your reflections focus on strengths",
+          "weakness": "Most of your reflections focus on weaknesses",
+          "skill": "Most of your reflections focus on skills",
+          "note": "Most of your reflections are general notes"
+        },
+        "titleEarly": "Most frequent topics so far",
         "titleEmpty": "Where do you invest your reflection energy?",
         "description": "Compares how often you log strengths, weaknesses, skills, and notes.",
+        "takeawayEarly": "{type} is logged most so far ({count} entries) — the mix may change as you add more.",
         "takeawayStrong": "{ratio}% of trait entries are strengths — you're building on what works.",
         "takeawayWeak": "Weaknesses lead at {ratio}% of trait entries — a growth opportunity to address.",
         "takeawayBalanced": "Strengths and weaknesses are balanced ({ratio}% strength ratio) — healthy self-awareness."
       },
       "consistency": {
+        "titleEarly": "A first look at your logging pace",
+        "titleMedium": {
+          "up": "Your logging pace is picking up",
+          "down": "Your logging pace has eased a bit",
+          "flat": "Your logging pace looks fairly steady"
+        },
         "title": {
           "up": "Your reflection habit is accelerating",
           "down": "Entry frequency is slowing down",
           "flat": "You maintain a stable reflection rhythm"
         },
         "description": "How many entries you log each week — frequency drives deeper insights.",
+        "takeawayEarly": "{total} entries so far — your weekly rhythm will sharpen as you keep going.",
+        "takeawayMedium": {
+          "up": "About {total} entries — peak week {peak}. Pace may be accelerating.",
+          "down": "About {total} entries recently — could be temporary; consistency helps analysis.",
+          "flat": "{total} entries at a similar pace — a steady pattern so far."
+        },
         "takeaway": {
           "up": "{total} entries logged across these weeks — peak week hit {peak} entries. Momentum is building.",
           "down": "Only {total} entries recently — consistency unlocks better trend analysis.",
@@ -296,29 +363,69 @@
         }
       },
       "tags": {
-        "title": "#{tag} is your most recurring theme",
+        "titleEarly": "Most frequent topics so far",
+        "titleMedium": "“{tag}” is among your most repeated themes",
+        "title": "“{tag}” is your most recurring theme",
         "description": "Top focus tags — where your mind spends the most reflection time.",
-        "takeaway": "#{tag} appears in {count} entries — this is a core thread in your personal narrative."
+        "takeawayEarly": "“{tag}” appears in {count} entries so far — ranking may change with more logging.",
+        "takeawayMedium": "“{tag}” shows up in {count} entries — prominent for now, not necessarily forever.",
+        "takeaway": "“{tag}” appears in {count} entries — a recurring thread in your personal narrative."
       },
       "correlation": {
+        "titleEarly": "Activity vs. rating",
         "titleAligned": "More entries correlate with higher self-ratings",
         "titleMixed": "Effort and outcomes aren't moving in sync yet",
-        "titleEmpty": "Does showing up more improve how you feel?",
         "description": "Each dot is one week: horizontal = entries logged, vertical = average rating.",
+        "takeawayEarly": "Each dot is one week — more weeks will clarify whether activity and rating move together.",
         "takeawayAligned": "Weeks with more entries tend to score higher — consistency appears to pay off.",
-        "takeawayMixed": "High activity doesn't always lift ratings — quality of reflection may matter more than volume.",
-        "takeawayEmpty": "Log across multiple weeks to see if effort and outcomes align."
+        "takeawayMixed": "High activity doesn't always lift ratings — quality of reflection may matter more than volume."
       },
       "heatmap": {
+        "titlePreview": "An early snapshot of your activity",
+        "titleModerate": "Activity spread across several days",
         "titleActive": "You show up regularly — reflection is becoming a habit",
-        "titleSparse": "Gaps in your reflection rhythm are visible",
         "description": "Daily entry density over the last {weeks} weeks — darker means more activity.",
-        "takeawayActive": "{activeDays} active days with {totalEntries} entries — your habit has real momentum.",
-        "takeawaySparse": "Only {activeDays} active days — even 2–3 entries per week compounds over time."
+        "takeawayPreview": "{activeDays} days with entries and {totalEntries} total — the picture sharpens as you continue.",
+        "takeawayModerate": "{activeDays} active days so far — patterns deepen with more reflections.",
+        "takeawayActive": "{activeDays} active days with {totalEntries} entries — your habit has real momentum."
       }
     }
   },
+  "achievements": {
+    "title": "Earned achievements",
+    "description": "Markers of real growth from your reflection practice — not points or competition.",
+    "empty": "Keep logging reflections. Meaningful milestones will appear here as your story grows.",
+    "categories": {
+      "commitment": "Commitment to self-reflection",
+      "consistency": "Rhythm and presence",
+      "growth": "Inner change",
+      "awareness": "Self-awareness"
+    },
+    "items": {
+      "firstReflection": "First reflection recorded",
+      "firstReflectionDesc": "You began documenting your inner world.",
+      "honestInventory": "Balanced self-inventory",
+      "honestInventoryDesc": "You logged both strengths and weaknesses — honest mirrors of yourself.",
+      "reflectionRhythm": "Reflection rhythm forming",
+      "reflectionRhythmDesc": "Several entries in one week — presence is becoming a habit.",
+      "steadyPresence": "Steady presence over weeks",
+      "steadyPresenceDesc": "You showed up across many days — consistency builds clarity.",
+      "depthMilestone": "Depth of practice",
+      "depthMilestoneDesc": "Ten reflections — enough to start seeing early patterns.",
+      "selfPortrait": "A growing self-portrait",
+      "selfPortraitDesc": "Thirty reflections — your data tells a richer story over time.",
+      "moodLift": "Mood trend lifting",
+      "moodLiftDesc": "Your recent self-ratings rose compared to the prior weeks.",
+      "tagThread": "Recurring inner theme",
+      "tagThreadDesc": "A tag repeats across entries — a thread worth following.",
+      "coreExplorer": "Full core dimensions used",
+      "coreExplorerDesc": "You explored strength, weakness, skill, and note — a rounded view."
+    }
+  },
   "insights": {
+    "onboardingEarly": "You have {count} reflections — the more you log, the clearer and more honest the charts become.",
+    "onboardingHonest": "We will not draw strong trends from just a few entries — guidance beats false certainty.",
+    "onboardingNext": "Keep adding 2–3 reflections per week — basic charts unlock around your tenth entry.",
     "empty": "Start adding entries to unlock personalized growth insights.",
     "lowActivity": "Low reflection activity in the last 7 days — your last entry was {days} days ago.",
     "weaknessTag": "Weakness in \"{tag}\" appears frequently this week ({count} entries).",
@@ -339,6 +446,24 @@
     "manageMessages": "Manage messages",
     "future": "More preferences",
     "futureHint": "Additional options will appear here in future updates.",
+    "customTypes": {
+      "title": "Custom reflection types",
+      "description": "Add up to {max} personal labels alongside the four core types (strength, weakness, skill, note).",
+      "empty": "No custom types yet — define what matters to your self-understanding.",
+      "labelField": "Type name",
+      "labelPlaceholder": "e.g. Boundary, Energy, Values",
+      "colorField": "Color",
+      "addButton": "Add type",
+      "limitReached": "Maximum {max} custom types allowed.",
+      "invalidLabel": "Enter a short name (1–32 characters).",
+      "colors": {
+        "violet": "Violet",
+        "teal": "Teal",
+        "orange": "Orange",
+        "pink": "Pink",
+        "slate": "Slate"
+      }
+    },
     "import": {
       "title": "Import Profile",
       "description": "Restore a previously exported Personal OS profile.",

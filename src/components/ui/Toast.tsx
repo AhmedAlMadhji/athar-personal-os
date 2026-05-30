@@ -65,7 +65,9 @@ export function Toast({
           className="shrink-0 rounded-lg px-2 py-1 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
           aria-label="Dismiss"
         >
-          ✕
+          <span aria-hidden className="text-sm leading-none">
+            ×
+          </span>
         </button>
       </div>
     </div>,

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useOnProfileImported } from "@/hooks/useOnProfileImported";
+import { IconRefresh } from "@/components/icons/AppIcons";
 import { getRandomMotivationalMessage } from "@/lib/motivationalMessagesService";
 
 function pickRandomIndex(length: number, exclude?: number): number {
@@ -68,7 +69,7 @@ export function WelcomeMessage({ compact = false }: { compact?: boolean }) {
           title={t("refresh")}
           aria-label={t("refresh")}
         >
-          🔄
+          <IconRefresh className="h-3.5 w-3.5" />
         </button>
       </div>
       {customText && !compact && (

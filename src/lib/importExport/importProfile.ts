@@ -64,11 +64,29 @@ function isMotivationalMessage(value: unknown): value is MotivationalMessage {
 
 function isUserSettings(value: unknown): value is UserSettings {
   if (!isRecord(value)) return false;
-  return (
-    value.id === SETTINGS_ID &&
-    (value.theme === "light" || value.theme === "dark") &&
-    (value.locale === "en" || value.locale === "ar")
-  );
+  if (
+    value.id !== SETTINGS_ID ||
+    (value.theme !== "light" && value.theme !== "dark") ||
+    (value.locale !== "en" && value.locale !== "ar")
+  ) {
+    return false;
+  }
+  if (value.customEntryTypes !== undefined) {
+    if (!Array.isArray(value.customEntryTypes)) return false;
+    if (
+      value.customEntryTypes.some(
+        (item) =>
+          !isRecord(item) ||
+          typeof item.id !== "string" ||
+          typeof item.label !== "string" ||
+          typeof item.colorKey !== "string" ||
+          typeof item.createdAt !== "string"
+      )
+    ) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function isEntryArray(value: unknown): value is Entry[] {

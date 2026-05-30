@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useOnProfileImported } from "@/hooks/useOnProfileImported";
 import { useTranslations } from "next-intl";
+import { AnalyticsChartEmpty } from "@/components/analytics/AnalyticsChartEmpty";
+import { AnalyticsStageBanner } from "@/components/analytics/AnalyticsStageBanner";
 import { ActivityHeatmap } from "@/components/charts/ActivityHeatmap";
 import { ConsistencyLineChart } from "@/components/charts/ConsistencyLineChart";
 import { CorrelationScatterChart } from "@/components/charts/CorrelationScatterChart";
@@ -11,6 +13,7 @@ import { TagsBreakdownPieChart } from "@/components/charts/TagsBreakdownPieChart
 import { TypeComparisonBarChart } from "@/components/charts/TypeComparisonBarChart";
 import { InsightsPanel } from "@/components/insights/InsightsPanel";
 import { PageHeader } from "@/components/PageHeader";
+import { getAnalyticsStage } from "@/lib/analyticsMaturity";
 import { getAnalyticsData, getInsights } from "@/lib/analyticsService";
 import type { AnalyticsData, Insight } from "@/types/analytics";
 
@@ -50,13 +53,40 @@ export default function AnalyticsPage() {
     );
   }
 
+  const entryCount = analytics.entryCount;
+  const stage = getAnalyticsStage(entryCount);
+  const insightsTitle =
+    entryCount <= 3
+      ? t("maturity.onboardingInsightsTitle")
+      : t("insightsTitle");
+  const insightsDesc =
+    entryCount <= 3
+      ? t("maturity.onboardingInsightsDesc")
+      : t("insightsDesc");
+
+  if (entryCount === 0) {
+    return (
+      <div className="space-y-5 [&>*:last-child]:mb-0">
+        <PageHeader title={t("title")} description={t("description")} />
+        <InsightsPanel insights={insights} />
+        <AnalyticsChartEmpty chart="growth" />
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 [&>*:last-child]:mb-0">
       <PageHeader title={t("title")} description={t("description")} />
 
-      <InsightsPanel insights={insights} />
+      <AnalyticsStageBanner stage={stage} entryCount={entryCount} />
 
-      <div className="grid min-h-0 gap-3 lg:grid-cols-2">
+      <InsightsPanel
+        insights={insights}
+        title={insightsTitle}
+        description={insightsDesc}
+      />
+
+      <div className="grid min-h-0 gap-4 lg:grid-cols-2">
         <GrowthLineChart
           data={analytics.growth}
           insight={analytics.insights.growth}

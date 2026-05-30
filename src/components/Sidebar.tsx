@@ -11,6 +11,7 @@ const navItems = [
   { href: "/add", labelKey: "addEntry" as const, icon: "add" },
   { href: "/timeline", labelKey: "timeline" as const, icon: "timeline" },
   { href: "/analytics", labelKey: "analytics" as const, icon: "analytics" },
+  { href: "/achievements", labelKey: "achievements" as const, icon: "achievements" },
   { href: "/insights", labelKey: "insights" as const, icon: "insights" },
   { href: "/settings", labelKey: "settings" as const, icon: "settings" },
   { href: "/about", labelKey: "about" as const, icon: "about" },
@@ -42,6 +43,12 @@ function NavIcon({ name }: { name: string }) {
       return (
         <svg {...props}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+        </svg>
+      );
+    case "achievements":
+      return (
+        <svg {...props}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52a6.003 6.003 0 0 1-5.395 4.493m.985-5.01v1.5c0 2.108-.966 3.99-2.48 5.228m2.48-6.728a46.32 46.32 0 0 1 2.916.52A6.003 6.003 0 0 0 16.27 9.728" />
         </svg>
       );
     case "insights":
