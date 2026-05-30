@@ -6,6 +6,7 @@ import {
   useRef,
   type ReactNode,
 } from "react";
+import { lockBodyScroll, unlockBodyScroll } from "@/lib/scrollLock";
 import { createPortal } from "react-dom";
 
 const FOCUSABLE_SELECTOR =
@@ -69,7 +70,7 @@ export function Dialog({
     if (!open) return;
 
     previousFocusRef.current = document.activeElement as HTMLElement | null;
-    document.body.style.overflow = "hidden";
+    lockBodyScroll();
     document.addEventListener("keydown", handleKeyDown);
 
     const timer = window.setTimeout(() => {
@@ -81,7 +82,7 @@ export function Dialog({
 
     return () => {
       window.clearTimeout(timer);
-      document.body.style.overflow = "";
+      unlockBodyScroll();
       document.removeEventListener("keydown", handleKeyDown);
       previousFocusRef.current?.focus();
     };

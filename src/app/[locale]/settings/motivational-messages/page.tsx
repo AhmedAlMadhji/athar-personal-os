@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useFormSubmitGuard } from "@/hooks/useFormSubmitGuard";
 import { PageHeader } from "@/components/PageHeader";
 import { useConfirm } from "@/components/ui/DialogProvider";
 import { Link } from "@/i18n/navigation";
@@ -19,6 +20,7 @@ export default function MotivationalMessagesPage() {
   const tc = useTranslations("common");
   const td = useTranslations("dialog");
   const confirm = useConfirm();
+  const { isSubmitting, run } = useFormSubmitGuard();
   const [messages, setMessages] = useState<MotivationalMessage[]>([]);
   const [text, setText] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -36,17 +38,19 @@ export default function MotivationalMessagesPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!text.trim()) return;
+    if (isSubmitting || !text.trim()) return;
 
-    if (editingId) {
-      await updateMotivationalMessage(editingId, { text });
-      setEditingId(null);
-    } else {
-      await createMotivationalMessage({ text });
-    }
+    await run(async () => {
+      if (editingId) {
+        await updateMotivationalMessage(editingId, { text });
+        setEditingId(null);
+      } else {
+        await createMotivationalMessage({ text });
+      }
 
-    setText("");
-    await load();
+      setText("");
+      await load();
+    });
   }
 
   function startEdit(message: MotivationalMessage) {
@@ -77,24 +81,35 @@ export default function MotivationalMessagesPage() {
       <form
         onSubmit={(e) => void handleSubmit(e)}
         className="space-y-3 rounded-2xl border border-zinc-200/80 bg-white p-5 shadow-sm dark:border-zinc-800/80 dark:bg-zinc-900/80"
+        aria-busy={isSubmitting}
       >
-        <label htmlFor="message-text" className="block text-start text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          {editingId ? t("editMessage") : t("addMessage")}
-        </label>
-        <textarea
-          id="message-text"
-          rows={3}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
-          placeholder={t("placeholder")}
-        />
+        <fieldset disabled={isSubmitting} className="space-y-3 border-0 p-0">
+          <label
+            htmlFor="message-text"
+            className="block text-start text-sm font-medium text-zinc-700 dark:text-zinc-300"
+          >
+            {editingId ? t("editMessage") : t("addMessage")}
+          </label>
+          <textarea
+            id="message-text"
+            rows={3}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm touch-pan-y dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+            placeholder={t("placeholder")}
+          />
+        </fieldset>
         <div className="flex flex-wrap gap-2">
           <button
             type="submit"
-            className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white"
+            disabled={isSubmitting}
+            className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white disabled:pointer-events-none disabled:opacity-60"
           >
-            {editingId ? t("saveChanges") : t("add")}
+            {isSubmitting
+              ? tc("saving")
+              : editingId
+                ? t("saveChanges")
+                : t("add")}
           </button>
           {editingId && (
             <button

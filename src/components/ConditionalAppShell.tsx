@@ -19,7 +19,7 @@ export function ConditionalAppShell({
 
   if (isMarketingPath(pathname)) {
     return (
-      <div className="fixed inset-0 overflow-x-hidden overflow-y-auto overscroll-contain">
+      <div className="fixed inset-0 overflow-x-hidden overflow-y-auto touch-pan-y [-webkit-overflow-scrolling:touch]">
         {children}
       </div>
     );

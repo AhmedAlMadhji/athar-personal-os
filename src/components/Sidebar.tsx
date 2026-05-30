@@ -153,7 +153,7 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
             </div>
           </Link>
 
-          <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain">
+          <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto touch-pan-y [-webkit-overflow-scrolling:touch]">
             {navItems.map((item) => {
               const active =
                 item.href === "/dashboard"

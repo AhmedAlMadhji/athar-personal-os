@@ -55,7 +55,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden overscroll-contain">
+        <main className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto touch-pan-y [-webkit-overflow-scrolling:touch]">
           <div className="mx-auto min-h-0 w-full max-w-6xl flex-1 px-4 py-3 sm:px-5 sm:py-4 lg:px-6">
             {children}
           </div>

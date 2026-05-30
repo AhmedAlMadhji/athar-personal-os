@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { parseTags } from "@/lib/parseTags";
 import type {
   DashboardStats,
   Entry,
@@ -165,11 +166,9 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   };
 }
 
+/** @deprecated Use `parseTags` from `@/lib/parseTags` */
 export function parseTagsInput(value: string): string[] {
-  return value
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean);
+  return parseTags(value);
 }
 
 export function formatTagsForInput(tags: string[]): string {

@@ -223,12 +223,15 @@
     "type": "Type",
     "description": "Description",
     "tags": "Tags",
-    "tagsHint": "(comma separated)",
+    "tagsWhat": "Tags help organize your thoughts and make them easier to find later.",
+    "tagsHelper": "Separate tags using commas (,)",
+    "tagsExample": "Example: self-growth, programming, learning",
+    "tagsArabicCommaHint": "Please use English commas (,) for now.",
     "descriptionRequired": "Description is required.",
     "saveError": "Could not save entry. Please try again.",
     "titlePlaceholder": "e.g. Public speaking",
     "descriptionPlaceholder": "Describe this entry in detail...",
-    "tagsPlaceholder": "career, habits, learning"
+    "tagsPlaceholder": "self-growth, programming, learning"
   },
   "analytics": {
     "title": "Analytics",

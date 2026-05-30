@@ -43,10 +43,14 @@ body {
   @apply bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-900 dark:text-zinc-100;
 }
 
-html,
+html {
+  min-height: 100%;
+  min-height: 100dvh;
+}
+
 body {
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
+  min-height: 100dvh;
 }
 
 /* Single typography system — Tajawal everywhere */
